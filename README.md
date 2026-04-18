@@ -6,30 +6,7 @@ A Flask web application that detects whether a news article is real or fake usin
 
 ## 📂 Project Structure
 
-Fake newspaper detecion model/
-│
-├─ .git/                     # Git metadata (auto‑created by `git init`)
-├─ .gitignore                # already in repo
-├─ README.md                 # already in repo
-├─ requirements.txt          # already in repo
-├─ run_example.py            # already in repo
-│
-├─ app.py                    # Flask entry point (already edited)
-│
-├─ src/                      # Python package with your model / utils
-│   ├─ __init__.py           # makes `src` a package (already exists)
-│   ├─ inference.py          # your model inference code
-│   ├─ train.py              # training script
-│   └─ ... (any other .py)   # keep all model‑related code here
-│
-├─ templates/                # HTML templates
-│   ├─ index.html            # main page (already there)
-│   └─ static/               # static assets (CSS, JS, images)
-│       ├─ style.css         # dark‑mode glassmorphism CSS (created)
-│       └─ (optional) script.js, logo.png, etc.
-│
-└─ data/ (optional)         # if you ever want to store small CSVs / JSONs
-    └─ raw/                  # keep large raw data out of Git (via .gitignore)
+<img width="877" height="637" alt="image" src="https://github.com/user-attachments/assets/fccc57cd-7207-4bd3-b91d-d3a4b3801d0a" />
 
 
 ```bash
