@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fake News Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-robot"></i> AI Fake News Detector</h1>
+            <p>Advanced Multimodal Detection using MobileNetV2 & Bi-LSTM</p>
+        </div>
+
+        <div class="glass-card">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if not prediction %}
+            <!-- Upload Form -->
+            <form action="/" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="label">News Headline</label>
+                    <input type="text" name="title" placeholder="Enter the news headline here..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="label">News Image</label>
+                    <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                        <input type="file" name="image" id="fileInput" hidden required accept="image/*" onchange="previewImage(this)">
+                        <div id="uploadText">
+                            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                            <p>Click to upload or drag & drop image</p>
+                        </div>
+                        <img id="imgPreview" style="max-width:100%; max-height: 200px; display: none; border-radius: 10px;">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-predict">Analyze News</button>
+            </form>
+            {% else %}
+            <!-- Result Section -->
+            <div class="result-section">
+                <div class="result-header">
+                    <h2>Analysis Result</h2>
+                    <div class="result-badge {{ result_class }}">
+                        {{ label }}
+                    </div>
+                </div>
+
+                <div class="content-preview">
+                    <div class="image-preview">
+                        <img src="{{ image_url }}" alt="Analyzed News Image">
+                    </div>
+                    <div class="text-info">
+                        <div class="info-item">
+                            <label class="label">Analyzed Text</label>
+                            <p>{{ title }}</p>
+                        </div>
+                        {% set fill_class = 'fill-fake' if result_class == 'fake' else 'fill-real' %}
+                        {% set width_class = 'w-' ~ confidence %}
+                        <div class="info-item">
+                            <label class="label">AI Confidence</label>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill {{ fill_class }} {{ width_class }}"></div>
+                            </div>
+                            <p class="confidence-text">{{ confidence }}%</p>
+                        </div>
+                        <a href="/" class="btn-predict" style="text-decoration: none; display: block; text-align: center; margin-top: 2rem;">Analyze Another</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('uploadText').style.display = 'none';
+                    var img = document.getElementById('imgPreview');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
